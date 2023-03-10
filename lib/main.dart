@@ -1,5 +1,6 @@
 import 'package:codigo6_alertas/pages/home_page.dart';
 import 'package:codigo6_alertas/pages/init_page.dart';
+import 'package:codigo6_alertas/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.manropeTextTheme(),
       ),
-      home: InitPage(),
+      home: LoginPage(),
     );
   }
 }
