@@ -6,11 +6,13 @@ class CommonTextFieldWidget extends StatelessWidget {
   String label;
   String hintText;
   InputType type;
+  TextEditingController controller;
 
   CommonTextFieldWidget({
     required this.label,
     required this.hintText,
     required this.type,
+    required this.controller,
   });
 
   @override
@@ -19,19 +21,23 @@ class CommonTextFieldWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          " $label:",
+        ),
+        const SizedBox(
+          height: 8.0,
         ),
         Container(
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
-                blurRadius: 12.0,
-                offset: Offset(4, 4),
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 12,
+                offset: const Offset(4, 4),
               ),
             ],
           ),
-          child: TextField(
+          child: TextFormField(
+            controller: controller,
             keyboardType: type == InputType.dni || type == InputType.phone
                 ? TextInputType.number
                 : TextInputType.text,
@@ -41,9 +47,7 @@ class CommonTextFieldWidget extends StatelessWidget {
                     ? 9
                     : null,
             inputFormatters: type == InputType.dni || type == InputType.phone
-                ? [
-                    FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
-                  ]
+                ? [FilteringTextInputFormatter.allow(RegExp(r"[0-9]"))]
                 : [],
             decoration: InputDecoration(
               counterText: "",
@@ -51,8 +55,8 @@ class CommonTextFieldWidget extends StatelessWidget {
               hintStyle: TextStyle(
                 fontSize: 14.0,
               ),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 12.0,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
                 vertical: 14.0,
               ),
               filled: true,
@@ -65,7 +69,21 @@ class CommonTextFieldWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14.0),
                 borderSide: BorderSide.none,
               ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14.0),
+                borderSide: BorderSide.none,
+              ),
             ),
+            validator: (String? value) {
+              if (value != null && value.isEmpty) {
+                return "Campo obligatorio";
+              }
+              return null;
+            },
           ),
         ),
       ],

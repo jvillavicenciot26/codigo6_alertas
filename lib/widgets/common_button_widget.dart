@@ -1,3 +1,4 @@
+import 'package:codigo6_alertas/ui/general.dart';
 import 'package:flutter/material.dart';
 
 class CommonButtonWidget extends StatelessWidget {
@@ -22,7 +23,7 @@ class CommonButtonWidget extends StatelessWidget {
             ),
           ),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xff605AF8),
+            backgroundColor: kBrandPrimaryColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14.0),
             ),

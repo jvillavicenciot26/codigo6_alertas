@@ -1,10 +1,12 @@
-import 'package:codigo6_alertas/pages/home_page.dart';
-import 'package:codigo6_alertas/pages/init_page.dart';
 import 'package:codigo6_alertas/pages/login_page.dart';
+import 'package:codigo6_alertas/utils/sp_global.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SPGlobal prefs = SPGlobal();
+  await prefs.initSharedPreferences();
   runApp(MyApp());
 }
 

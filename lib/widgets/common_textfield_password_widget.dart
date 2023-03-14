@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CommonTextFieldPasswordWidget extends StatefulWidget {
-  const CommonTextFieldPasswordWidget({super.key});
+  TextEditingController controller;
+  CommonTextFieldPasswordWidget({required this.controller});
 
   @override
   State<CommonTextFieldPasswordWidget> createState() =>
-      _CommonTextFieldPasswordWidgetState();
+      _CommonTextFielPasswordWidgetState();
 }
 
-class _CommonTextFieldPasswordWidgetState
+class _CommonTextFielPasswordWidgetState
     extends State<CommonTextFieldPasswordWidget> {
   bool isInvisible = true;
 
@@ -18,24 +19,32 @@ class _CommonTextFieldPasswordWidgetState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Contraseña",
+          " Contraseña:",
+        ),
+        const SizedBox(
+          height: 8.0,
         ),
         Container(
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
-                blurRadius: 12.0,
-                offset: Offset(4, 4),
+                color: Colors.black.withOpacity(0.06),
+                blurRadius: 12,
+                offset: const Offset(4, 4),
               ),
             ],
           ),
-          child: TextField(
+          child: TextFormField(
+            controller: widget.controller,
             obscureText: isInvisible,
             decoration: InputDecoration(
-              hintText: "Tu Contraseña",
+              hintText: "Tu contraseña",
               hintStyle: TextStyle(
                 fontSize: 14.0,
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 14.0,
               ),
               suffixIcon: IconButton(
                 icon: Icon(
@@ -49,10 +58,6 @@ class _CommonTextFieldPasswordWidgetState
                   setState(() {});
                 },
               ),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 12.0,
-                vertical: 14.0,
-              ),
               filled: true,
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
@@ -63,11 +68,24 @@ class _CommonTextFieldPasswordWidgetState
                 borderRadius: BorderRadius.circular(14.0),
                 borderSide: BorderSide.none,
               ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14.0),
+                borderSide: BorderSide.none,
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14.0),
+                borderSide: BorderSide.none,
+              ),
             ),
+            validator: (String? value) {
+              if (value != null && value.isEmpty) {
+                return "Campo obligatorio";
+              }
+              return null;
+            },
           ),
         ),
       ],
     );
-    ;
   }
 }

@@ -1,7 +1,14 @@
+import 'package:codigo6_alertas/models/incident_model.dart';
 import 'package:codigo6_alertas/pages/init_page.dart';
+import 'package:codigo6_alertas/services/api_service.dart';
+import 'package:codigo6_alertas/ui/general.dart';
+import 'package:codigo6_alertas/widgets/general_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {
+  ApiService apiService = ApiService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,52 +27,93 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                ListView.builder(
-                  physics: ScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 20,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 16.0,
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        vertical: 6.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          14.0,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.06),
-                            blurRadius: 12,
-                            offset: Offset(4, 4),
-                          ),
-                        ],
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          "Secuestro al paso",
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Juan Manuel Ramos Garcia",
+                FutureBuilder(
+                  future: apiService.getIncidents(),
+                  builder: (BuildContext context, AsyncSnapshot snap) {
+                    if (snap.hasData) {
+                      List<IncidentModel> incidents = snap.data;
+                      return ListView.builder(
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: incidents.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                              vertical: 8.0,
+                              horizontal: 16.0,
                             ),
-                            Text(
-                              "45120747",
+                            padding: EdgeInsets.symmetric(
+                              vertical: 6.0,
                             ),
-                            Text(
-                              "2022/12/31 10:40 AM",
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(
+                                14.0,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.06),
+                                  blurRadius: 12,
+                                  offset: Offset(4, 4),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    );
+                            child: ListTile(
+                              title: Text(
+                                incidents[index].tipoIncidente.titulo,
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    incidents[index].datosCiudadano.nombres,
+                                  ),
+                                  Text(
+                                    "DNI: ${incidents[index].datosCiudadano.dni}",
+                                  ),
+                                  Text(
+                                    incidents[index].fecha,
+                                  ),
+                                ],
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Uri url = Uri.parse(
+                                          "http://maps.google.com/?q=${incidents[index].latitud},${incidents[index].longitud}");
+                                      launchUrl(url,
+                                          mode: LaunchMode.externalApplication);
+                                    },
+                                    icon: Icon(
+                                      Icons.map,
+                                      color: kBrandPrimaryColor,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      Uri uriPhone = Uri(
+                                        scheme: "tel",
+                                        path: incidents[index]
+                                            .datosCiudadano
+                                            .telefono,
+                                      );
+                                      launchUrl(uriPhone);
+                                    },
+                                    icon: Icon(
+                                      Icons.call,
+                                      color: kBrandPrimaryColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return loadingWidget;
                   },
                 ),
               ],

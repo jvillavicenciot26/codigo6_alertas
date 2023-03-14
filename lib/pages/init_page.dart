@@ -1,5 +1,6 @@
 import 'package:codigo6_alertas/pages/home_page.dart';
 import 'package:codigo6_alertas/pages/map_page.dart';
+import 'package:codigo6_alertas/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class InitPage extends StatefulWidget {
@@ -16,9 +17,7 @@ class _InitPageState extends State<InitPage> {
       child: Text("Mapa"),
     ),
     MapPage(),
-    Center(
-      child: Text("Perfil"),
-    ),
+    ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {
