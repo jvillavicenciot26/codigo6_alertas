@@ -1,4 +1,8 @@
+import 'dart:ffi';
+
+import 'package:codigo6_alertas/modals/register_incident_modal.dart';
 import 'package:codigo6_alertas/models/incident_model.dart';
+import 'package:codigo6_alertas/models/incident_type_model.dart';
 import 'package:codigo6_alertas/pages/init_page.dart';
 import 'package:codigo6_alertas/services/api_service.dart';
 import 'package:codigo6_alertas/ui/general.dart';
@@ -6,12 +10,43 @@ import 'package:codigo6_alertas/widgets/general_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   ApiService apiService = ApiService();
+  List<IncidentType> incidentsType = [];
+
+  @override
+  void initState() {
+    super.initState();
+    apiService.getTypeIncidents().then((value) {
+      incidentsType = value;
+    });
+  }
+
+  showSendIncident() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return RegisterIncidentModal(incidentsType: incidentsType);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showSendIncident();
+        },
+        backgroundColor: kBrandPrimaryColor,
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

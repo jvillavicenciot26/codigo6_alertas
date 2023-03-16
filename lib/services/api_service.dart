@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:codigo6_alertas/models/incident_model.dart';
+import 'package:codigo6_alertas/models/incident_type_model.dart';
 import 'package:codigo6_alertas/models/user_model.dart';
 import 'package:codigo6_alertas/utils/sp_global.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
@@ -46,7 +48,33 @@ class ApiService {
     }
   }
 
-  register() {}
+  Future<IncidentModel> registerIncident(int type, Position position) async {
+    Uri url = Uri.parse("http://167.99.240.65/API/incidentes/crear/");
+    http.Response response = await http.post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Token ${SPGlobal().token}",
+      },
+      body: json.encode(
+        {
+          "latitud": position.latitude,
+          "longitud": position.longitude,
+          "tipoIncidente": type,
+          "estado": "Abierto"
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      String dataConvert = Utf8Decoder().convert(response.bodyBytes);
+      Map<String, dynamic> data = json.decode(dataConvert);
+      IncidentModel incidentModel = IncidentModel.fromJson(data);
+      return incidentModel;
+    } else {
+      //return null;
+      throw {"message": "Hubo un inconveniente, inténtalo nuevamente."};
+    }
+  }
 
   //
 
@@ -60,6 +88,20 @@ class ApiService {
       List<IncidentModel> incidents = [];
       incidents = data.map((e) => IncidentModel.fromJson(e)).toList();
       return incidents;
+    }
+    return [];
+  }
+
+  Future<List<IncidentType>> getTypeIncidents() async {
+    Uri url = Uri.parse("http://167.99.240.65/API/incidentes/tipos/");
+    http.Response response = await http.get(url);
+    if (response.statusCode == 200) {
+      String dataConvert = Utf8Decoder().convert(response
+          .bodyBytes); //Para procesar los caracteres extraños como tildes y demas
+      List data = json.decode(dataConvert);
+      List<IncidentType> incidentstype = [];
+      incidentstype = data.map((e) => IncidentType.fromJson(e)).toList();
+      return incidentstype;
     }
     return [];
   }
