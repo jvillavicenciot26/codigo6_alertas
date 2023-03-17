@@ -3,7 +3,6 @@ import 'dart:ffi';
 import 'package:codigo6_alertas/modals/register_incident_modal.dart';
 import 'package:codigo6_alertas/models/incident_model.dart';
 import 'package:codigo6_alertas/models/incident_type_model.dart';
-import 'package:codigo6_alertas/pages/init_page.dart';
 import 'package:codigo6_alertas/services/api_service.dart';
 import 'package:codigo6_alertas/ui/general.dart';
 import 'package:codigo6_alertas/widgets/general_widget.dart';
@@ -33,7 +32,10 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return RegisterIncidentModal(incidentsType: incidentsType);
       },
-    );
+    ).then((value) {
+      print("Hola");
+      setState(() {});
+    });
   }
 
   @override

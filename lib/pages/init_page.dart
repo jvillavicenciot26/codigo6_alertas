@@ -1,5 +1,6 @@
 import 'package:codigo6_alertas/pages/home_page.dart';
 import 'package:codigo6_alertas/pages/map_page.dart';
+import 'package:codigo6_alertas/pages/news_page.dart';
 import 'package:codigo6_alertas/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -13,9 +14,7 @@ class _InitPageState extends State<InitPage> {
 
   List<Widget> pages = [
     HomePage(),
-    Center(
-      child: Text("Mapa"),
-    ),
+    NewsPage(),
     MapPage(),
     ProfilePage(),
   ];
