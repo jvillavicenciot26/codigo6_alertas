@@ -1,4 +1,5 @@
 import 'package:codigo6_alertas/pages/init_page.dart';
+import 'package:codigo6_alertas/pages/register_page.dart';
 import 'package:codigo6_alertas/services/api_service.dart';
 import 'package:codigo6_alertas/ui/general.dart';
 import 'package:codigo6_alertas/utils/types.dart';
@@ -137,7 +138,14 @@ class _LoginPageState extends State<LoginPage> {
                             "Aún no estás registrado? ",
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterPage(),
+                                ),
+                              );
+                            },
                             child: Text(
                               " Regístrate",
                               style: TextStyle(

@@ -43,6 +43,8 @@ dependencies:
   url_launcher: ^6.1.10
   geolocator: ^9.0.2
   image_picker: ^0.8.7
+  mime_type: ^1.0.0
+  flutter_native_image: ^0.0.6+1
 
 dev_dependencies:
   flutter_test:

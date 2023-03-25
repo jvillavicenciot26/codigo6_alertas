@@ -25,4 +25,10 @@ class SPGlobal {
   }
 
   bool get isLogin => prefs.getBool("isLogin") ?? false;
+
+  set id(int value) {
+    prefs.setInt("id", value);
+  }
+
+  int get id => prefs.getInt("id") ?? 0;
 }
